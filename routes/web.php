@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/dashboard', function () {
-    return view('cms.index');
-});
+require __DIR__ . '/pages/auth.php';
+require __DIR__ . '/pages/cms.php';
