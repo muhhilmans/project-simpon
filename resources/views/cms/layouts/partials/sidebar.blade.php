@@ -57,77 +57,81 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
-            <a href="index.html" class="menu-link">
+        <li class="menu-item {{ Route::is('dashboard') ? 'active' : ''}}">
+            <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
 
-        <!-- Guru -->
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Guru</span>
-        </li>
-        <li class="menu-item">
-            <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Pembelajaran</div>
-            </a>
-        </li>
+        @hasrole('superadmin|admin|teacher')
+            <!-- Guru -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Guru</span>
+            </li>
+            <li class="menu-item">
+                <a href="cards-basic.html" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Pembelajaran</div>
+                </a>
+            </li>
 
-        <!-- Wali Kelas -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Wali Kelas</span></li>
-        <li class="menu-item">
-            <a href="cards-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-collection"></i>
-                <div data-i18n="Basic">Cards</div>
-            </a>
-        </li>
+            <!-- Wali Kelas -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Wali Kelas</span></li>
+            <li class="menu-item">
+                <a href="cards-basic.html" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Cards</div>
+                </a>
+            </li>
 
-        <!-- Settings -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Settings</span></li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Elements">Form Elements</div>
-            </a>
-            <ul class="menu-sub">
+            @hasrole('superadmin|admin')
+                <!-- Master -->
+                <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
                 <li class="menu-item">
-                    <a href="forms-basic-inputs.html" class="menu-link">
-                        <div data-i18n="Basic Inputs">Basic Inputs</div>
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-detail"></i>
+                        <div data-i18n="Form Elements">Form Elements</div>
                     </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="forms-basic-inputs.html" class="menu-link">
+                                <div data-i18n="Basic Inputs">Basic Inputs</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="forms-input-groups.html" class="menu-link">
+                                <div data-i18n="Input groups">Input groups</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="menu-item">
-                    <a href="forms-input-groups.html" class="menu-link">
-                        <div data-i18n="Input groups">Input groups</div>
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon tf-icons bx bx-detail"></i>
+                        <div data-i18n="Form Layouts">Form Layouts</div>
+                    </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="form-layouts-vertical.html" class="menu-link">
+                                <div data-i18n="Vertical Form">Vertical Form</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="form-layouts-horizontal.html" class="menu-link">
+                                <div data-i18n="Horizontal Form">Horizontal Form</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Tables -->
+                <li class="menu-item {{ Route::is('users.*') ? 'active' : ''}}">
+                    <a href="{{ route('users.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-group"></i>
+                        <div data-i18n="Users">Users</div>
                     </a>
                 </li>
-            </ul>
-        </li>
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-detail"></i>
-                <div data-i18n="Form Layouts">Form Layouts</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="form-layouts-vertical.html" class="menu-link">
-                        <div data-i18n="Vertical Form">Vertical Form</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="form-layouts-horizontal.html" class="menu-link">
-                        <div data-i18n="Horizontal Form">Horizontal Form</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- Tables -->
-        <li class="menu-item">
-            <a href="tables-basic.html" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-table"></i>
-                <div data-i18n="Tables">Tables</div>
-            </a>
-        </li>
+            @endhasrole
+        @endhasrole
     </ul>
 </aside>

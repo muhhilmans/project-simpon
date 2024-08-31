@@ -12,7 +12,7 @@
             <div class="nav-item d-flex align-items-center">
                 <i class="bx bx-search fs-4 lh-0"></i>
                 <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                    aria-label="Search..." />
+                    aria-label="Search..." id="filter" />
             </div>
         </div>
         <!-- /Search -->
@@ -37,8 +37,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">John Doe</span>
-                                    <small class="text-muted">Admin</small>
+                                    <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
+                                    <small class="text-muted">{{ auth()->user()->username }}</small>
                                 </div>
                             </div>
                         </a>

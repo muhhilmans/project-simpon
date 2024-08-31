@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function () {
@@ -10,4 +11,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/candidate', function () {
         return view('cms.pages.candidate.index');
     })->name('candidate');
+
+    Route::group(['middleware' => ['role:superadmin|admin']], function () {
+        Route::resource('users', UserController::class);
+    });
 });

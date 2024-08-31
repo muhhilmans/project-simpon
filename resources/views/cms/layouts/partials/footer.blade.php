@@ -7,8 +7,8 @@
                 document.write(new Date().getFullYear());
             </script>
             , made with ❤️ by
-            <a href="https://themeselection.com" target="_blank"
-                class="footer-link fw-bolder">ThemeSelection</a>
+            <a href="#" target="_blank"
+                class="footer-link fw-bolder">IT PKBM Bela Warga</a>
         </div>
         {{-- <div>
             <a href="https://themeselection.com/license/" class="footer-link me-4"
