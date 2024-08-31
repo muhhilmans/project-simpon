@@ -37,6 +37,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $user = Auth::user();
+
+            if ($user->roles->first()->name == 'student') {
+                if ($user->is_active == 0) {
+                    return redirect()->intended('/candidate');
+                }
+            }
+
             return redirect()->intended('/dashboard');
         }
 
@@ -63,9 +71,9 @@ class AuthController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()
-                             ->withErrors($validator)
-                             ->withInput();
-        }   
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $user = User::create([
             'name' => $request->name,
