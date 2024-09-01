@@ -7,7 +7,7 @@
         <div class="card-header d-flex align-items-center">
             <button class="btn btn-dark d-inline-flex align-items-center me-2" type="button" data-bs-toggle="modal"
                 data-bs-target="#createModal"><i class="bx bx-plus"></i> Tambah</button>
-            {{-- @include('pages.users.partials.create') --}}
+            @include('cms.pages.user.partials.create')
             <select class="form-select" style="width: 70px" id="records_per_page">
                 <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
                 <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
@@ -29,10 +29,20 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @foreach ($users as $user)
+                        @foreach ($users as $index => $user)
                             <tr class="text-center">
-                                <td>{{ $loop->iteration }}</td>
-                                <td class="text-start"><strong>{{ $user->name }}</strong></td>
+                                <td>
+                                    @if ($users instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                        {{ $index + $users->firstItem() }}
+                                    @else
+                                        {{ $loop->iteration }}
+                                    @endif
+                                </td>
+                                @if ($user->hasRole('wargabelajar'))
+                                    <td class="text-start"><strong>{{ $user->studentProfile->name }}</strong></td>
+                                @else
+                                    <td class="text-start"><strong>{{ $user->civitasProfile->name }}</strong></td>
+                                @endif
                                 <td>{{ $user->email }}</td>
                                 </td>
                                 <td>
@@ -47,12 +57,12 @@
                                         <button class="btn btn-warning" type="button" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $user->id }}"><i
                                                 class="bx bx-edit-alt me-1"></i> Ubah</button>
-                                        {{-- @include('pages.users.partials.edit') --}}
+                                        @include('cms.pages.user.partials.edit')
                                         <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal{{ $user->id }}"><i
                                                 class="bx bx-trash me-1"></i>
                                             Hapus</button>
-                                        {{-- @include('pages.users.partials.delete') --}}
+                                        @include('cms.pages.user.partials.delete')
                                     </div>
                                 </td>
                             </tr>

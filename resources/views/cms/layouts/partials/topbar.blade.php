@@ -23,7 +23,15 @@
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="{{ asset('assets/img/profile-default.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                        @if (auth()->user()->hasRole('wargabelajar'))
+                            <img alt="Profile"
+                                src="{{ auth()->user()->studentProfile->photo ? route('getImage', ['path' => 'photos', 'imageName' => auth()->user()->studentProfile->photo]) : asset('assets/img/profile-default.png') }}"
+                                class="w-px-40 h-auto rounded-circle">
+                        @else
+                            <img alt="Profile"
+                                src="{{ auth()->user()->civitasProfile->photo ? route('getImage', ['path' => 'photos', 'imageName' => auth()->user()->civitasProfile->photo]) : asset('assets/img/profile-default.png') }}"
+                                class="w-px-40 h-auto rounded-circle">
+                        @endif
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -32,12 +40,25 @@
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ asset('assets/img/profile-default.png') }}" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                        @if (auth()->user()->hasRole('wargabelajar'))
+                                            <img alt="Profile"
+                                                src="{{ auth()->user()->studentProfile->photo ? route('getImage', ['path' => 'photos', 'imageName' => auth()->user()->studentProfile->photo]) : asset('assets/img/profile-default.png') }}"
+                                                class="w-px-40 h-auto rounded-circle">
+                                        @else
+                                            <img alt="Profile"
+                                                src="{{ auth()->user()->civitasProfile->photo ? route('getImage', ['path' => 'photos', 'imageName' => auth()->user()->civitasProfile->photo]) : asset('assets/img/profile-default.png') }}"
+                                                class="w-px-40 h-auto rounded-circle">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
+                                    @if (auth()->user()->hasRole('wargabelajar'))
+                                        <span
+                                            class="fw-semibold d-block">{{ auth()->user()->studentProfile->name }}</span>
+                                    @else
+                                        <span
+                                            class="fw-semibold d-block">{{ auth()->user()->civitasProfile->name }}</span>
+                                    @endif
                                     <small class="text-muted">{{ auth()->user()->username }}</small>
                                 </div>
                             </div>

@@ -51,4 +51,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function studentProfile()
+    {
+        return $this->hasOne(StudentProfile::class);
+    }
+
+    public function studentFiles()
+    {
+        return $this->hasOne(StudentFile::class);
+    }
+
+    public function civitasProfile()
+    {
+        return $this->hasOne(CivitasProfile::class);
+    }
 }

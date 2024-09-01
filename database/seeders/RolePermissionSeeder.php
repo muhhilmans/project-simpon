@@ -24,12 +24,12 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         Role::create([
-            'name' => 'teacher',
+            'name' => 'tutor',
             'guard_name' => 'web'
         ]);
 
         Role::create([
-            'name' => 'student',
+            'name' => 'wargabelajar',
             'guard_name' => 'web'
         ]);
     }

@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\CivitasProfile;
 use App\Models\Role;
+use App\Models\StudentFile;
+use App\Models\StudentProfile;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -20,16 +23,15 @@ class UserSeeder extends Seeder
         $users = [
             ['name' => 'Super Admin', 'email' => 'superadmin@gmail.com', 'username' => 'superadmin', 'is_active' => true, 'role' => 'superadmin'],
             ['name' => 'Admin', 'email' => 'admin@gmail.com', 'username' => 'admin', 'is_active' => true, 'role' => 'admin'],
-            ['name' => 'Tutor', 'email' => 'tutor@gmail.com', 'username' => 'tutor1', 'is_active' => true, 'role' => 'teacher'],
-            ['name' => 'Tutor 2', 'email' => 'tutor2@gmail.com', 'username' => 'tutor2', 'is_active' => true, 'role' => 'teacher'],
-            ['name' => 'Warga Belajar', 'email' => 'wargabelajar@gmail.com', 'username' => 'wb', 'is_active' => false, 'role' => 'student'],
-            ['name' => 'Warga Belajar 2', 'email' => 'wargabelajar2@gmail.com', 'username' => 'wb2', 'is_active' => false, 'role' => 'student'],
-            ['name' => 'Warga Belajar3', 'email' => 'wargabelajar3@gmail.com', 'username' => 'wb3', 'is_active' => false, 'role' => 'student'],
+            ['name' => 'Tutor', 'email' => 'tutor@gmail.com', 'username' => 'tutor1', 'is_active' => true, 'role' => 'tutor'],
+            ['name' => 'Tutor 2', 'email' => 'tutor2@gmail.com', 'username' => 'tutor2', 'is_active' => true, 'role' => 'tutor'],
+            ['name' => 'Warga Belajar', 'email' => 'wargabelajar@gmail.com', 'username' => 'wb', 'is_active' => false, 'role' => 'wargabelajar'],
+            ['name' => 'Warga Belajar 2', 'email' => 'wargabelajar2@gmail.com', 'username' => 'wb2', 'is_active' => false, 'role' => 'wargabelajar'],
+            ['name' => 'Warga Belajar3', 'email' => 'wargabelajar3@gmail.com', 'username' => 'wb3', 'is_active' => false, 'role' => 'wargabelajar'],
         ];
 
         foreach ($users as $userData) {
             $user = User::create([
-                'name' => $userData['name'],
                 'username' => $userData['username'],
                 'email' => $userData['email'],
                 'password' => $password,
@@ -40,6 +42,22 @@ class UserSeeder extends Seeder
             // $role = Role::where('name', $userData['role'])->first();
             $role = Role::findByName($userData['role'], 'web');
             $user->assignRole($role);
+
+            if ($userData['role'] == 'wargabelajar') {
+                StudentProfile::create([
+                    'user_id' => $user->id,
+                    'name' => $userData['name'],
+                ]);
+    
+                StudentFile::create([
+                    'user_id' => $user->id,
+                ]);
+            } else {
+                CivitasProfile::create([
+                    'user_id' => $user->id,
+                    'name' => $userData['name'],
+                ]);
+            }
         }
     }
 }
