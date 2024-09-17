@@ -23,44 +23,50 @@
             </a>
         </li>
 
-        @hasrole('superadmin|admin|teacher')
+        @hasrole('superadmin|ketua|admin|tutor')
             <!-- Guru -->
             <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Guru</span>
+                <span class="menu-header-text">Pembelajaran</span>
             </li>
             <li class="menu-item">
                 <a href="cards-basic.html" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                    <div data-i18n="Basic">Pembelajaran</div>
+                    <div data-i18n="Basic">Materi</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="cards-basic.html" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Tugas</div>
                 </a>
             </li>
 
-            <!-- Wali Kelas -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Wali Kelas</span></li>
+            <!-- Rekapitulasi -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Rekapitulasi</span></li>
             <li class="menu-item">
                 <a href="cards-basic.html" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                    <div data-i18n="Basic">Cards</div>
+                    <div data-i18n="Basic">Nilai</div>
                 </a>
             </li>
 
             @hasrole('superadmin|admin')
                 <!-- Master -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
-                <li class="menu-item">
+                <li class="menu-item  {{ Route::is('users.*', 'wargabelajar.*') ? 'active open' : ''}}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Form Elements">Form Elements</div>
+                        <i class="menu-icon tf-icons bx bx-group"></i>
+                        <div data-i18n="Form Elements">Pengguna</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="forms-basic-inputs.html" class="menu-link">
-                                <div data-i18n="Basic Inputs">Basic Inputs</div>
+                        <li class="menu-item {{ Route::is('users.*') ? 'active' : ''}}">
+                            <a href="{{ route('users.index') }}" class="menu-link">
+                                <div data-i18n="Civitas">Civitas</div>
                             </a>
                         </li>
-                        <li class="menu-item">
-                            <a href="forms-input-groups.html" class="menu-link">
-                                <div data-i18n="Input groups">Input groups</div>
+                        <li class="menu-item {{ Route::is('wargabelajar.*') ? 'active' : ''}}">
+                            <a href="{{ route('wargabelajar.index') }}" class="menu-link">
+                                <div data-i18n="Warga Belajar">Warga Belajar</div>
                             </a>
                         </li>
                     </ul>
@@ -82,13 +88,6 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <!-- Tables -->
-                <li class="menu-item {{ Route::is('users.*') ? 'active' : ''}}">
-                    <a href="{{ route('users.index') }}" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-group"></i>
-                        <div data-i18n="Users">Pengguna</div>
-                    </a>
                 </li>
             @endhasrole
         @endhasrole

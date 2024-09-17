@@ -16,6 +16,7 @@ class StudentProfile extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'nik',
         'nis',
         'nisn',
         'place_of_birth',
@@ -28,6 +29,7 @@ class StudentProfile extends Model
         'district',
         'regency',
         'province',
+        'phone_number',
         'photo',
         'father_name',
         'mother_name',

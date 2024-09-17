@@ -7,4 +7,8 @@ Route::get('/', function () {
 })->name('home');
 
 require __DIR__ . '/pages/auth.php';
-require __DIR__ . '/pages/cms.php';
+
+Route::group(['middleware' => 'auth'], function () {
+    require __DIR__ . '/pages/cms.php';
+    require __DIR__ . '/pages/user.php';
+});

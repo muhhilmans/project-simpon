@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
+            $table->string('nik')->nullable();
             $table->string('nis')->nullable();
             $table->string('nisn')->nullable();
             $table->string('place_of_birth')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->string('district')->nullable();
             $table->string('regency')->nullable();
             $table->string('province')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('photo')->nullable();
             $table->string('father_name')->nullable();
             $table->string('mother_name')->nullable();

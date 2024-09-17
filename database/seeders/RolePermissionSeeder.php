@@ -19,6 +19,11 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         Role::create([
+            'name' => 'ketua',
+            'guard_name' => 'web'
+        ]);
+
+        Role::create([
             'name' => 'admin',
             'guard_name' => 'web'
         ]);
