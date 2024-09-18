@@ -53,14 +53,14 @@
             @hasrole('superadmin|admin')
                 <!-- Master -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
-                <li class="menu-item  {{ Route::is('users.*', 'wargabelajar.*') ? 'active open' : ''}}">
+                <li class="menu-item  {{ Route::is('civitas.*', 'wargabelajar.*') ? 'active open' : ''}}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-group"></i>
                         <div data-i18n="Form Elements">Pengguna</div>
                     </a>
                     <ul class="menu-sub">
-                        <li class="menu-item {{ Route::is('users.*') ? 'active' : ''}}">
-                            <a href="{{ route('users.index') }}" class="menu-link">
+                        <li class="menu-item {{ Route::is('civitas.*') ? 'active' : ''}}">
+                            <a href="{{ route('civitas.index') }}" class="menu-link">
                                 <div data-i18n="Civitas">Civitas</div>
                             </a>
                         </li>

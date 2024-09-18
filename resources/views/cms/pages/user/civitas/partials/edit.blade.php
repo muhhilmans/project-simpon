@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="editModalLabel{{ $user->id }}">Edit Pengguna</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('users.update', $user->id) }}" method="POST">
+            <form action="{{ route('civitas.update', $user->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">

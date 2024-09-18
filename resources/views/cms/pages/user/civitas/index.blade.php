@@ -7,7 +7,7 @@
         <div class="card-header d-flex align-items-center">
             <button class="btn btn-dark d-inline-flex align-items-center me-2" type="button" data-bs-toggle="modal"
                 data-bs-target="#createModal"><i class="bx bx-plus"></i> Tambah</button>
-            @include('cms.pages.user.partials.create')
+            @include('cms.pages.user.civitas.partials.create')
             <select class="form-select" style="width: 70px" id="records_per_page">
                 <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
                 <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
@@ -57,12 +57,12 @@
                                         <button class="btn btn-warning" type="button" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $user->id }}"><i
                                                 class="bx bx-edit-alt me-1"></i> Ubah</button>
-                                        @include('cms.pages.user.partials.edit')
+                                        @include('cms.pages.user.civitas.partials.edit')
                                         <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal{{ $user->id }}"><i
                                                 class="bx bx-trash me-1"></i>
                                             Hapus</button>
-                                        @include('cms.pages.user.partials.delete')
+                                        @include('cms.pages.user.civitas.partials.delete')
                                     </div>
                                 </td>
                             </tr>

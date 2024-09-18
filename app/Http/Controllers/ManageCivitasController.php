@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\StudentFile;
 use Illuminate\Http\Request;
-use App\Models\StudentProfile;
+use App\Models\CivitasProfile;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
-class ManageWargaBelajarController extends Controller
+class ManageCivitasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,20 +23,26 @@ class ManageWargaBelajarController extends Controller
     public function index(Request $request)
     {
         $perPages = $request->get('perPage') ?? 5;
-        $roles = Role::all();
+        $roles = Role::where('name', '!=', 'wargabelajar');
+
+        if (Auth::user()->roles->pluck('name')->intersect(['admin', 'ketua'])->isNotEmpty()) {
+            $roles = $roles->where('name', '!=', 'superadmin');
+        }
+
+        $roles = $roles->get();
 
         if ($perPages == 'all') {
             $users = User::with('roles')->whereHas('roles', function ($query) {
-                $query->where('name', 'wargabelajar');
+                $query->whereIn('name', ['superadmin', 'ketua', 'admin', 'tutor']);
             })->get();
         } else {
             $perPage = intval($perPages);
             $users = User::with('roles')->whereHas('roles', function ($query) {
-                $query->where('name', 'wargabelajar');
+                $query->whereIn('name', ['superadmin', 'ketua', 'admin', 'tutor']);
             })->latest()->paginate($perPage);
         }
 
-        return view('cms.pages.user.wargabelajar.index', compact(['users', 'roles']));
+        return view('cms.pages.user.civitas.index', compact(['users', 'roles']));
     }
 
     /**
@@ -49,6 +55,7 @@ class ManageWargaBelajarController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:' . User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -61,22 +68,17 @@ class ManageWargaBelajarController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_active' => false,
+            'is_active' => true
         ]);
 
-        StudentProfile::create([
+        $user->assignRole($request->role);
+
+        CivitasProfile::create([
             'user_id' => $user->id,
             'name' => $request->name,
         ]);
 
-        StudentFile::create([
-            'user_id' => $user->id,
-        ]);
-
-        $role = Role::findByName('wargabelajar', 'web');
-        $user->assignRole($role);
-
-        return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil ditambahkan!');
+        return redirect()->route('civitas.index')->with('success', 'Civitas berhasil ditambahkan!');
     }
 
     /**
@@ -84,22 +86,7 @@ class ManageWargaBelajarController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
-
-        return view('cms.pages.user.wargabelajar.detail', compact('user'));
-    }
-
-    public function changeStatus(Request $request, User $user)
-    {
-
-        $user->is_active = ($user->is_active == 1 ? 0 : 1);
-        $user->save();
-
-        // if ($user->active == 1) {
-        //     Mail::to($user->email)->send(new NotificationApproveUser);
-        // }
-
-        return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil ' . ($user->active == 1 ? 'Diaktifkan' : 'Dinonaktifkan'));
+        //
     }
 
     /**
@@ -136,15 +123,15 @@ class ManageWargaBelajarController extends Controller
             }
             $user->save();
 
-            $studentProfile = StudentProfile::where('user_id', $id)->firstOrFail();
-            if ($request->input('name') !== $studentProfile->name) {
-                $studentProfile->name = $request->input('name');
+            $civitas = CivitasProfile::where('user_id', $id)->firstOrFail();
+            if ($request->input('name') !== $civitas->name) {
+                $civitas->name = $request->input('name');
             }
-            $studentProfile->save();
+            $civitas->save();
 
             DB::commit();
 
-            return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil diperbarui!');
+            return redirect()->route('civitas.index')->with('success', 'Civitas berhasil diperbarui!');
         } catch (Exception $e) {
             DB::rollBack();
             
@@ -161,6 +148,6 @@ class ManageWargaBelajarController extends Controller
 
         $user->delete();
 
-        return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil dihapus!');
+        return redirect()->route('civitas.index')->with('success', 'Civitas berhasil dihapus!');
     }
 }
