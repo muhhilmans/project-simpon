@@ -86,7 +86,9 @@ class ManageCivitasController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return view('cms.pages.user.civitas.detail', compact('user'));
     }
 
     /**

@@ -38,13 +38,10 @@
                                         {{ $loop->iteration }}
                                     @endif
                                 </td>
-                                @if ($user->hasRole('wargabelajar'))
-                                    <td class="text-start"><strong>{{ $user->studentProfile->name }}</strong></td>
-                                @else
-                                    <td class="text-start"><strong>{{ $user->civitasProfile->name }}</strong></td>
-                                @endif
-                                <td>{{ $user->email }}</td>
+                                <td class="text-start">
+                                    <a href="{{ route('civitas.show', $user->id) }}" class="fw-bold text-decoration-none text-black">{{ $user->civitasProfile->name }}</a>
                                 </td>
+                                <td>{{ $user->email }}</td>
                                 <td>
                                     {{ $user->username }}
                                     {{-- <span class="badge bg-label-primary me-1">Active</span> --}}
@@ -56,12 +53,11 @@
                                     <div class="d-flex align-items-center justify-content-center gap-2 text-start">
                                         <button class="btn btn-warning" type="button" data-bs-toggle="modal"
                                             data-bs-target="#editModal{{ $user->id }}"><i
-                                                class="bx bx-edit-alt me-1"></i> Ubah</button>
+                                                class="bx bx-edit-alt me-1"></i></button>
                                         @include('cms.pages.user.civitas.partials.edit')
                                         <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                             data-bs-target="#deleteModal{{ $user->id }}"><i
-                                                class="bx bx-trash me-1"></i>
-                                            Hapus</button>
+                                                class="bx bx-trash me-1"></i></button>
                                         @include('cms.pages.user.civitas.partials.delete')
                                     </div>
                                 </td>
