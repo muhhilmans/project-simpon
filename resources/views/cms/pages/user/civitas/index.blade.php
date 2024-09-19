@@ -1,7 +1,7 @@
-@extends('cms.layouts.main', ['title' => 'Users'])
+@extends('cms.layouts.main', ['title' => 'Pengguna'])
 
 @section('content')
-    <h4 class="fw-bold py-3 mb-4">Kelola Pengguna</h4>
+    <h4 class="fw-bold py-3 mb-4">Kelola Civitas</h4>
 
     <div class="card px-3 py-2">
         <div class="card-header d-flex align-items-center">
@@ -77,16 +77,3 @@
         <!-- END: Pagination -->
     </div>
 @endsection
-
-@push('custom-scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('records_per_page').addEventListener('change', function() {
-                const perPage = this.value;
-                const urlParams = new URLSearchParams(window.location.search);
-                urlParams.set('perPage', perPage);
-                window.location.search = urlParams.toString();
-            });
-        });
-    </script>
-@endpush

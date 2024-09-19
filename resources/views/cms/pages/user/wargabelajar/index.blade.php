@@ -79,16 +79,3 @@
         <!-- END: Pagination -->
     </div>
 @endsection
-
-@push('custom-scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('records_per_page').addEventListener('change', function() {
-                const perPage = this.value;
-                const urlParams = new URLSearchParams(window.location.search);
-                urlParams.set('perPage', perPage);
-                window.location.search = urlParams.toString();
-            });
-        });
-    </script>
-@endpush

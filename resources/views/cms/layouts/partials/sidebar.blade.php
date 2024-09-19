@@ -53,10 +53,16 @@
             @hasrole('superadmin|admin')
                 <!-- Master -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
+                <li class="menu-item {{ Route::is('school-year.*') ? 'active' : ''}}">
+                    <a href="{{ route('school-year.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-cog"></i>
+                        <div data-i18n="Tahun Ajaran">Tahun Ajaran</div>
+                    </a>
+                </li>
                 <li class="menu-item  {{ Route::is('civitas.*', 'wargabelajar.*') ? 'active open' : ''}}">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-group"></i>
-                        <div data-i18n="Form Elements">Pengguna</div>
+                        <div data-i18n="Pengguna">Pengguna</div>
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item {{ Route::is('civitas.*') ? 'active' : ''}}">
@@ -67,24 +73,6 @@
                         <li class="menu-item {{ Route::is('wargabelajar.*') ? 'active' : ''}}">
                             <a href="{{ route('wargabelajar.index') }}" class="menu-link">
                                 <div data-i18n="Warga Belajar">Warga Belajar</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-detail"></i>
-                        <div data-i18n="Form Layouts">Form Layouts</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="form-layouts-vertical.html" class="menu-link">
-                                <div data-i18n="Vertical Form">Vertical Form</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="form-layouts-horizontal.html" class="menu-link">
-                                <div data-i18n="Horizontal Form">Horizontal Form</div>
                             </a>
                         </li>
                     </ul>

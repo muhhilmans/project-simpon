@@ -152,6 +152,12 @@
                 return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
             }
 
+            document.getElementById('records_per_page').addEventListener('change', function() {
+                const perPage = this.value;
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('perPage', perPage);
+                window.location.search = urlParams.toString();
+            });
         });
 
         function updateFileName(input) {
