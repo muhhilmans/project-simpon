@@ -29,13 +29,13 @@
                 <span class="menu-header-text">Pembelajaran</span>
             </li>
             <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
+                <a href="{{ route('material.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic">Materi</div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
+                <a href="{{ route('task.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic">Tugas</div>
                 </a>
@@ -44,7 +44,7 @@
             <!-- Rekapitulasi -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Rekapitulasi</span></li>
             <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
+                <a href="{{ route('grade.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
                     <div data-i18n="Basic">Nilai</div>
                 </a>
@@ -53,6 +53,12 @@
             @hasrole('superadmin|admin')
                 <!-- Master -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
+                <li class="menu-item {{ Route::is('subject.*') ? 'active' : ''}}">
+                    <a href="{{ route('subject.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-cog"></i>
+                        <div data-i18n="Mata Pelajaran">Mata Pelajaran</div>
+                    </a>
+                </li>
                 <li class="menu-item {{ Route::is('school-year.*') ? 'active' : ''}}">
                     <a href="{{ route('school-year.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-cog"></i>

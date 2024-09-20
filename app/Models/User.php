@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(CivitasProfile::class);
     }
+
+    public function subjects()
+    {
+        return $this->hasOne(Subject::class);
+    }
 }
