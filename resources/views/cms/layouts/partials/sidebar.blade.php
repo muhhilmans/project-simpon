@@ -50,9 +50,15 @@
                 </a>
             </li>
 
-            @hasrole('superadmin|admin')
+            @hasrole('superadmin|admin|ketua')
                 <!-- Master -->
                 <li class="menu-header small text-uppercase"><span class="menu-header-text">Master</span></li>
+                <li class="menu-item {{ Route::is('classroom.*') ? 'active' : ''}}">
+                    <a href="{{ route('classroom.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-cog"></i>
+                        <div data-i18n="Rombel">Rombel</div>
+                    </a>
+                </li>
                 <li class="menu-item {{ Route::is('subject.*') ? 'active' : ''}}">
                     <a href="{{ route('subject.index') }}" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-cog"></i>

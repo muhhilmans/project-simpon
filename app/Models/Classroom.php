@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SchoolYear extends Model
+class Classroom extends Model
 {
     use HasFactory, HasUuids;
 
@@ -14,14 +14,18 @@ class SchoolYear extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'early_year',
-        'final_year',
-        'semester',
-        'is_active',
+        'name',
+        'level_id',
+        'school_year_id',
     ];
 
-    public function classrooms()
+    public function level()
     {
-        return $this->hasMany(Classroom::class);
+        return $this->belongsTo(Level::class);
+    }
+
+    public function schoolYear()
+    {
+        return $this->belongsTo(SchoolYear::class);
     }
 }
