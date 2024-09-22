@@ -71,7 +71,11 @@ class ManageSchoolYearController extends Controller
         $schoolYear->is_active = ($schoolYear->is_active == 1 ? 0 : 1);
         $schoolYear->save();
 
-        return redirect()->route('school-year.index')->with('success', 'Warga Belajar berhasil ' . ($schoolYear->active == 1 ? 'Diaktifkan' : 'Dinonaktifkan'));
+        if ($schoolYear->is_active == 1) {
+            return redirect()->route('school-year.index')->with('success', 'Tahun Ajaran berhasil diaktifkan');
+        }
+
+        return redirect()->route('school-year.index')->with('success', 'Tahun Ajaran berhasil dinonaktifkan');
     }
 
     /**

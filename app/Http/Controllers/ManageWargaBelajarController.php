@@ -99,7 +99,11 @@ class ManageWargaBelajarController extends Controller
         //     Mail::to($user->email)->send(new NotificationApproveUser);
         // }
 
-        return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil ' . ($user->active == 1 ? 'Diaktifkan' : 'Dinonaktifkan'));
+        if ($user->is_active == 1) {
+            return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil diaktifkan');
+        }
+
+        return redirect()->route('wargabelajar.index')->with('success', 'Warga Belajar berhasil dinonaktifkan');
     }
 
     /**

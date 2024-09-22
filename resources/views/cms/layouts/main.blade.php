@@ -67,6 +67,7 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
+                        @include('cms.layouts.partials.notify')
                         @yield('content')
                     </div>
                     <!-- / Content -->
