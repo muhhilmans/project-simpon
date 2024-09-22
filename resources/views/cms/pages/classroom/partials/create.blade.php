@@ -30,11 +30,16 @@
                         <div class="col-lg-6 mb-3">
                             <label for="school_year_id" class="form-label">Tahun Ajaran <span
                                     class="text-danger">*</span></label>
-                            <input type="text" class="form-control"
-                                value="{{ $schoolYear->first()->early_year }}/{{ $schoolYear->first()->final_year }} ({{ $schoolYear->first()->semester == 1 ? 'Ganjil' : 'Genap' }})"
-                                disabled>
-                            <input type="hidden" name="school_year_id" id="school_year_id"
-                                value="{{ $schoolYear->first()->id }}">
+                            @if ($schoolYear->isNotEmpty())
+                                <input type="text" class="form-control"
+                                    value="{{ $schoolYear->first()->early_year }}/{{ $schoolYear->first()->final_year }} ({{ $schoolYear->first()->semester == 1 ? 'Ganjil' : 'Genap' }})"
+                                    disabled>
+                                <input type="hidden" name="school_year_id" id="school_year_id"
+                                    value="{{ $schoolYear->first()->id }}">
+                            @else
+                                <input type="text" class="form-control" value="Tahun ajaran tidak tersedia" disabled>
+                                <input type="hidden" name="school_year_id" id="school_year_id" value="">
+                            @endif
                             {{-- <select name="school_year_id" id="school_year_id" name="school_year_id" class="form-select" required>
                                 <option disabled selected>Pilih Tahun Ajaran...</option>
                                 @foreach ($schoolYear as $sy)

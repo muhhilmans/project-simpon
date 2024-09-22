@@ -41,7 +41,7 @@
                                         @endif
                                     </td>
                                     <td class="text-start fw-bold">
-                                        <span>{{ $data->name }}</span>
+                                        <a href="{{ route('classroom.show', $data->id) }}" class="text-decoration-none text-black">{{ $data->name }}</a>
                                     </td>
                                     <td>
                                         <span>Tingkat {{ $data->level->name }}, Kelas {{ $data->level->class }}, Paket {{ $data->level->package }}</span>

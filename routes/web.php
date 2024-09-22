@@ -6,6 +6,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::fallback(function () {
+    $data = new \stdClass();
+    $data->message = 'Halaman tidak ditemukan!';
+
+    return view('error', compact('data'));
+});
+
+
 require __DIR__ . '/pages/auth.php';
 
 Route::group(['middleware' => 'auth'], function () {

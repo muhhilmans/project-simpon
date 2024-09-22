@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Subject::class);
     }
+
+    public function classroomUsers()
+    {
+        return $this->hasMany(ClassroomUser::class);
+    }
 }

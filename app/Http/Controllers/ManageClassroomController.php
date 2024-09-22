@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Level;
 use App\Models\Classroom;
 use App\Models\SchoolYear;
 use Illuminate\Http\Request;
+use App\Models\ClassroomUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class ManageClassroomController extends Controller
@@ -25,7 +28,7 @@ class ManageClassroomController extends Controller
             $datas = Classroom::all();
         } else {
             $perPage = intval($perPages);
-            $datas = Classroom::latest()->paginate($perPage);
+            $datas = Classroom::orderBy('name', 'asc')->paginate($perPage);
         }
 
         return view('cms.pages.classroom.index', compact(['datas', 'levels', 'schoolYear']));
@@ -72,9 +75,82 @@ class ManageClassroomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Classroom $classroom)
     {
-        //
+        if ($classroom) {
+            $allStudents = User::role('wargabelajar')->where('is_active', true)->get();
+            $classroomStudents = ClassroomUser::where('classroom_id', $classroom->id)->get();
+            $studentsInAnyClassroom = ClassroomUser::pluck('user_id')->toArray();
+
+            $availableStudents = $allStudents->filter(function ($student) use ($studentsInAnyClassroom) {
+                return !in_array($student->id, $studentsInAnyClassroom);
+            });
+
+            return view('cms.pages.classroom.detail', [
+                'classroom' => $classroom,
+                'classroomStudents' => $classroomStudents,
+                'students' => $availableStudents
+            ]);
+        } else {
+            return Redirect::route('classroom.index')->with('error', 'Detail Rombongan Belajar tidak ditemukan!');
+        }
+    }
+
+    public function addStudent(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $classroom = Classroom::find($id);
+
+        if (!$classroom) {
+            return Redirect::route('classroom.index')->with('error', 'Kelas tidak ditemukan!');
+        }
+
+        try {
+            DB::transaction(function () use ($request, &$store, $id) {
+                $store = ClassroomUser::create([
+                    'classroom_id' => $id,
+                    'user_id' => $request->input('user_id'),
+                ]);
+            });
+            if ($store) {
+                return redirect()->route('classroom.show', $id)->with('success', 'Warga Belajar berhasil ditambahkan!');
+            } else {
+                return back()->with('error', 'Warga Belajar gagal ditambahkan!');
+            }
+        } catch (\Throwable $th) {
+            $data = [
+                'message' => $th->getMessage(),
+                'status' => 400
+            ];
+
+            return view('error', compact('data'));
+        }
+    }
+
+    public function removeStudent(Request $request)
+    {
+        $student = ClassroomUser::findOrFail($request->data_id);
+
+        try {
+            DB::transaction(function () use ($student, &$delete) {
+                $delete = $student->delete();
+            });
+            if ($delete) {
+                return redirect()->back()->with('success', 'Warga Belajar berhasil dihapus!');
+            } else {
+                return back()->with('error', 'Warga Belajar gagal dihapus!');
+            }
+        } catch (\Throwable $th) {
+            $data = [
+                'message' => $th->getMessage(),
+                'status' => 400
+            ];
+
+            return view('error', compact('data'));
+        }
     }
 
     /**
