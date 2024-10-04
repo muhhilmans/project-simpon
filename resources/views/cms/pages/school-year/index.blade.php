@@ -5,9 +5,11 @@
 
     <div class="card px-3 py-2">
         <div class="card-header d-flex align-items-center">
-            <button class="btn btn-dark d-inline-flex align-items-center me-2" type="button" data-bs-toggle="modal"
-                data-bs-target="#createModal"><i class="bx bx-plus"></i> Tambah</button>
-            @include('cms.pages.school-year.partials.create')
+            @hasrole('superadmin|admin')
+                <button class="btn btn-dark d-inline-flex align-items-center me-2" type="button" data-bs-toggle="modal"
+                    data-bs-target="#createModal"><i class="bx bx-plus"></i> Tambah</button>
+                @include('cms.pages.school-year.partials.create')
+            @endhasrole
             <select class="form-select" style="width: 70px" id="records_per_page">
                 <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
                 <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
@@ -24,7 +26,9 @@
                             <th>Tahun Ajaran</th>
                             <th>Semester</th>
                             <th>Status</th>
-                            <th>Aksi</th>
+                            @hasrole('superadmin|admin')
+                                <th>Aksi</th>
+                            @endhasrole
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
@@ -45,23 +49,25 @@
                                         <span>{{ $data->semester == 1 ? 'Ganjil' : 'Genap' }}</span>
                                     </td>
                                     <td>
-                                        <span class="badge bg-label-{{ $data->is_active == 1 ? 'primary' : 'danger' }} me-1" type="button"
-                                            data-bs-toggle="modal"
+                                        <span class="badge bg-label-{{ $data->is_active == 1 ? 'primary' : 'danger' }} me-1"
+                                            type="button" data-bs-toggle="modal"
                                             data-bs-target="#changeModal{{ $data->id }}">{{ $data->is_active == 1 ? 'Aktif' : 'Tidak Aktif' }}</span>
                                         @include('cms.pages.school-year.partials.change')
                                     </td>
-                                    <td>
-                                        <div class="d-flex align-items-center justify-content-center gap-2 text-start">
-                                            <button class="btn btn-warning" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#editModal{{ $data->id }}"><i
-                                                    class="bx bx-edit-alt"></i></button>
-                                            @include('cms.pages.school-year.partials.edit')
-                                            <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal{{ $data->id }}"><i
-                                                    class="bx bx-trash"></i></button>
-                                            @include('cms.pages.school-year.partials.delete')
-                                        </div>
-                                    </td>
+                                    @hasrole('superadmin|admin')
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-center gap-2 text-start">
+                                                <button class="btn btn-warning" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#editModal{{ $data->id }}"><i
+                                                        class="bx bx-edit-alt"></i></button>
+                                                @include('cms.pages.school-year.partials.edit')
+                                                <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal{{ $data->id }}"><i
+                                                        class="bx bx-trash"></i></button>
+                                                @include('cms.pages.school-year.partials.delete')
+                                            </div>
+                                        </td>
+                                    @endhasrole
                                 </tr>
                             @endforeach
                         @endif

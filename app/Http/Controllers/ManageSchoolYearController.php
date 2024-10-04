@@ -120,16 +120,19 @@ class ManageSchoolYearController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, SchoolYear $schoolYear): RedirectResponse
+    public function destroy(Request $request, SchoolYear $schoolYear)
     {
         try {
             DB::transaction(function () use ($schoolYear, &$delete) {
-                $delete = $schoolYear->delete();
+                if ($schoolYear->classrooms()->count() == 0) {
+                    $delete = $schoolYear->delete();
+                }
             });
+            
             if ($delete) {
                 return redirect()->route('school-year.index')->with('success', 'Tahun Ajaran berhasil dihapus!');
             } else {
-                return back()->with('error', 'Tahun Ajaran gagal dihapus!');
+                return back()->with('error', 'Masih ada rombongan belajar yang menggunakan tahun ajaran ini!');
             }
         } catch (\Throwable $th) {
             $data = [

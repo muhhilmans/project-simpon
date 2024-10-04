@@ -53,10 +53,10 @@
     <div class="container-xxl container-p-y">
         <div class="misc-wrapper">
             <h2 class="mb-2 mx-2">Ada Kesalahan Terjadi :(</h2>
-            <p class="mb-4 mx-2">Oops! 😖 {{ $data->message }}.</p>
+            <p class="mb-4 mx-2">Oops! 😖 {{ $data['message'] }}.</p>
             <a href="{{ url()->previous() }}" class="btn btn-primary">Kembali ke halaman sebelumnya</a>
             <div class="mt-3">
-                <img src="{{ asset('assets/img/page-misc-error-light.png') }}" alt="error" width="500"
+                <img src="{{ asset('assets/img/error.png') }}" alt="error" width="400"
                     class="img-fluid" />
             </div>
         </div>

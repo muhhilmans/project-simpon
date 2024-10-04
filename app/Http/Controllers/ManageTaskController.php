@@ -11,7 +11,7 @@ class ManageTaskController extends Controller
      */
     public function index()
     {
-        return view('maintenance');
+        return view('soon');
     }
 
     /**

@@ -2,35 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Level;
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Models\ChapterMaterial;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
-class ManageSubjectController extends Controller
+class ManageChapterMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $perPages = $request->get('perPage') ?? 5;
-        $levels = Level::all();
-        $users = User::with('roles')->whereHas('roles', function ($query) {
-            $query->where('name', 'tutor');
-        })->get();
+        $perPages = $request->get('perPage', 5);
+        $user = auth()->user();
 
-        if ($perPages == 'all') {
-            $datas = Subject::all();
+        if ($user->roles->pluck('name')->contains('tutor')) {
+            $subjects = Subject::where('user_id', $user->id)->get();
+
+            if ($subjects->isNotEmpty()) {
+                $datas = ChapterMaterial::whereIn('subject_id', $subjects->pluck('id'))->paginate($perPages);
+            } else {
+                $datas = collect();
+            }
         } else {
-            $perPage = intval($perPages);
-            $datas = Subject::latest()->paginate($perPage);
+            $subjects = Subject::all();
+            $datas = ChapterMaterial::paginate($perPages);
         }
 
-        return view('cms.pages.subject.index', compact(['datas', 'levels', 'users']));
+        return view('cms.pages.chapter.index', compact('datas', 'subjects'));
     }
 
     /**
@@ -40,8 +43,7 @@ class ManageSubjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'level_id' => ['required'],
-            'user_id' => ['required'],
+            'subject_id' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -50,16 +52,15 @@ class ManageSubjectController extends Controller
 
         try {
             DB::transaction(function () use ($request, &$store) {
-                $store = Subject::create([
+                $store = ChapterMaterial::create([
                     'name' => $request->name,
-                    'level_id' => $request->level_id,
-                    'user_id' => $request->user_id,
+                    'subject_id' => $request->subject_id,
                 ]);
             });
             if ($store) {
-                return redirect()->route('subject.index')->with('success', 'Mata Pelajaran berhasil ditambahkan!');
+                return redirect()->route('chapter.index')->with('success', 'Bab Materi berhasil ditambahkan!');
             } else {
-                return back()->with('error', 'Mata Pelajaran gagal ditambahkan!');
+                return back()->with('error', 'Bab Materi gagal ditambahkan!');
             }
         } catch (\Throwable $th) {
             $data = [
@@ -82,12 +83,11 @@ class ManageSubjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Subject $subject): RedirectResponse
+    public function update(Request $request, string $id): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'level_id' => ['required'],
-            'user_id' => ['required'],
+            'subject_id' => ['required', 'exists:subjects,id'],
         ]);
 
         if ($validator->fails()) {
@@ -95,17 +95,18 @@ class ManageSubjectController extends Controller
         }
 
         try {
-            DB::transaction(function () use ($request, $subject, &$update) {
-                $update = $subject->update([
+            DB::transaction(function () use ($request, $id, &$update) {
+                $chapterMaterial = ChapterMaterial::findOrFail($id);
+
+                $update = $chapterMaterial->update([
                     'name' => $request->name,
-                    'level_id' => $request->level_id,
-                    'user_id' => $request->user_id,
+                    'subject_id' => $request->subject_id,
                 ]);
             });
             if ($update) {
-                return redirect()->route('subject.index')->with('success', 'Mata Pelajaran berhasil diperbarui!');
+                return redirect()->route('chapter.index')->with('success', 'Bab Materi berhasil diperbarui!');
             } else {
-                return back()->with('error', 'Mata Pelajaran gagal diperbarui!');
+                return back()->with('error', 'Bab Materi gagal diperbarui!');
             }
         } catch (\Throwable $th) {
             $data = [
@@ -120,18 +121,21 @@ class ManageSubjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subject $subject)
+    public function destroy(Request $request, string $id)
     {
         try {
-            DB::transaction(function () use ($subject, &$delete) {
-                if ($subject->chapterMaterial()->count() == 0) {
-                    $delete = $subject->delete();
+            $chapterMaterial = ChapterMaterial::findOrFail($id);
+            
+            DB::transaction(function () use ($chapterMaterial, &$delete) {
+                if ($chapterMaterial->subChapterMaterial()->count() == 0) {
+                    $delete = $chapterMaterial->delete();
                 }
             });
+            
             if ($delete) {
-                return redirect()->route('subject.index')->with('success', 'Mata Pelajaran berhasil dihapus!');
+                return redirect()->route('chapter.index')->with('success', 'Bab Materi berhasil dihapus!');
             } else {
-                return back()->with('error', 'Masih ada materi yang menggunakan mata pelajaran ini!');
+                return back()->with('error', 'Masih ada sub materi yang menggunakan bab materi ini!');
             }
         } catch (\Throwable $th) {
             $data = [

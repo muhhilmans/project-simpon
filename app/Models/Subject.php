@@ -28,4 +28,9 @@ class Subject extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function chapterMaterial()
+    {
+        return $this->hasMany(ChapterMaterial::class);
+    }
 }

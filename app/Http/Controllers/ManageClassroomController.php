@@ -194,16 +194,19 @@ class ManageClassroomController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Classroom $classroom): RedirectResponse
+    public function destroy(Classroom $classroom)
     {
         try {
             DB::transaction(function () use ($classroom, &$delete) {
-                $delete = $classroom->delete();
+                if ($classroom->classroomUsers()->count() == 0) {
+                    $delete = $classroom->delete();
+                }
+                
             });
             if ($delete) {
                 return redirect()->route('classroom.index')->with('success', 'Rombongan Belajar berhasil dihapus!');
             } else {
-                return back()->with('error', 'Rombongan Belajar gagal dihapus!');
+                return back()->with('error', 'Masih ada warga belajar yang menggunakan rombongan belajar ini!');
             }
         } catch (\Throwable $th) {
             $data = [

@@ -11,7 +11,7 @@ class ManageGradeController extends Controller
      */
     public function index()
     {
-        return view('maintenance');
+        return view('soon');
     }
 
     /**

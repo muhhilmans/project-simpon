@@ -39,7 +39,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            if ($user->roles->first()->name == 'student') {
+            if ($user->roles->first()->name == 'wargabelajar') {
                 if ($user->is_active == 0) {
                     return redirect()->intended('/candidate');
                 }

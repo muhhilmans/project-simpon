@@ -7,8 +7,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::fallback(function () {
-    $data = new \stdClass();
-    $data->message = 'Halaman tidak ditemukan!';
+    // $data = new \stdClass();
+    // $data->message = 'Halaman tidak ditemukan!';
+    $data = [
+        'message' => 'Halaman tidak ditemukan!'
+    ];
 
     return view('error', compact('data'));
 });

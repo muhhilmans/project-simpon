@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('chapter_materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->uuid('level_id');
-            $table->uuid('user_id');
-            $table->foreign('level_id')->references('id')->on('levels')->constrained()->onDelete('restrict');
-            $table->foreign('user_id')->references('id')->on('users')->constrained()->onDelete('restrict');
+            $table->uuid('subject_id');
+            $table->foreign('subject_id')->references('id')->on('subjects')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('chapter_materials');
     }
 };

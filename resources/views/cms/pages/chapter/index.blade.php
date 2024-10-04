@@ -1,14 +1,14 @@
-@extends('cms.layouts.main', ['title' => 'Rombongan Belajar'])
+@extends('cms.layouts.main', ['title' => 'Bab Materi'])
 
 @section('content')
-    <h4 class="fw-bold py-3 mb-4">Kelola Rombongan Belajar</h4>
+    <h4 class="fw-bold py-3 mb-4">Kelola Bab Materi</h4>
 
     <div class="card px-3 py-2">
         <div class="card-header d-flex align-items-center">
-            @hasrole('superadmin|admin')
+            @hasrole('superadmin|admin|tutor')
                 <button class="btn btn-dark d-inline-flex align-items-center me-2" type="button" data-bs-toggle="modal"
                     data-bs-target="#createModal"><i class="bx bx-plus"></i> Tambah</button>
-                @include('cms.pages.classroom.partials.create')
+                @include('cms.pages.chapter.partials.create')
             @endhasrole
             <select class="form-select" style="width: 70px" id="records_per_page">
                 <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
@@ -23,17 +23,19 @@
                     <thead>
                         <tr class="text-center">
                             <th>#</th>
-                            <th>Nama Ruang</th>
-                            <th>Tingkat</th>
-                            <th>Tahun Ajaran</th>
-                            @hasrole('superadmin|admin')
+                            <th>Judul Bab</th>
+                            <th>Mata Pelajaran</th>
+                            @hasrole('superadmin|admin|ketua')
+                                <th>Tutor</th>
+                            @endhasrole
+                            @hasrole('superadmin|admin|tutor')
                                 <th>Aksi</th>
                             @endhasrole
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                         @if ($datas->count() == 0)
-                            <td colspan="5" class="text-center fw-bold">Belum ada data</td>
+                            <td colspan="4" class="text-center fw-bold">Belum ada data</td>
                         @else
                             @foreach ($datas as $index => $data)
                                 <tr class="text-center">
@@ -45,28 +47,27 @@
                                         @endif
                                     </td>
                                     <td class="text-start fw-bold">
-                                        <a href="{{ route('classroom.show', $data->id) }}"
-                                            class="text-decoration-none text-black">{{ $data->name }}</a>
+                                        <span class="fw-bold">{{ $data->name }}</span>
                                     </td>
                                     <td>
-                                        <span>Tingkat {{ $data->level->name }}, Kelas {{ $data->level->class }}, Paket
-                                            {{ $data->level->package }}</span>
+                                        <span>{{ $data->subject->name }}</span>
                                     </td>
-                                    <td>
-                                        <span>{{ $data->schoolYear->early_year }}/{{ $data->schoolYear->final_year }}
-                                            ({{ $data->schoolYear->semester == 1 ? 'Ganjil' : 'Genap' }})</span>
-                                    </td>
-                                    @hasrole('superadmin|admin')
+                                    @hasrole('superadmin|admin|ketua')
+                                        <td>
+                                            <span>{{ $data->subject->user->civitasProfile->name }}</span>
+                                        </td>
+                                    @endhasrole
+                                    @hasrole('superadmin|admin|tutor')
                                         <td>
                                             <div class="d-flex align-items-center justify-content-center gap-2 text-start">
                                                 <button class="btn btn-warning" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#editModal{{ $data->id }}"><i
                                                         class="bx bx-edit-alt"></i></button>
-                                                @include('cms.pages.classroom.partials.edit')
+                                                @include('cms.pages.chapter.partials.edit')
                                                 <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#deleteModal{{ $data->id }}"><i
                                                         class="bx bx-trash"></i></button>
-                                                @include('cms.pages.classroom.partials.delete')
+                                                @include('cms.pages.chapter.partials.delete')
                                             </div>
                                         </td>
                                     @endhasrole

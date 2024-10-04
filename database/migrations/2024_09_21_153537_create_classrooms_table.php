@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->uuid('level_id');
             $table->uuid('school_year_id');
-            $table->foreign('level_id')->references('id')->on('levels')->onDelete('cascade');
-            $table->foreign('school_year_id')->references('id')->on('school_years')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->constrained()->onDelete('restrict');
+            $table->foreign('school_year_id')->references('id')->on('school_years')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }

@@ -16,23 +16,44 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
+        @if (auth()->user()->is_active == 1)
         <li class="menu-item {{ Route::is('dashboard') ? 'active' : ''}}">
             <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
+        @else
+        <li class="menu-item {{ Route::is('candidate') ? 'active' : ''}}">
+            <a href="{{ route('candidate') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+        @endif
 
         @hasrole('superadmin|ketua|admin|tutor')
             <!-- Guru -->
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Pembelajaran</span>
             </li>
-            <li class="menu-item">
-                <a href="{{ route('material.index') }}" class="menu-link">
+            <li class="menu-item  {{ Route::is('chapter.*', 'sub-chapter.*') ? 'active open' : ''}}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-collection"></i>
-                    <div data-i18n="Basic">Materi</div>
+                    <div data-i18n="Materi">Materi</div>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item {{ Route::is('chapter.*') ? 'active' : ''}}">
+                        <a href="{{ route('chapter.index') }}" class="menu-link">
+                            <div data-i18n="Bab">Bab</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Route::is('sub-chapter.*') ? 'active' : ''}}">
+                        <a href="{{ route('sub-chapter.index') }}" class="menu-link">
+                            <div data-i18n="Sub Bab">Sub Bab</div>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="menu-item">
                 <a href="{{ route('task.index') }}" class="menu-link">

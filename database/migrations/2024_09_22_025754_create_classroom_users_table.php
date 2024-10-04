@@ -15,8 +15,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('classroom_id');
             $table->uuid('user_id');
-            $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('classroom_id')->references('id')->on('classrooms')->constrained()->onDelete('restrict');
+            $table->foreign('user_id')->references('id')->on('users')->constrained()->onDelete('restrict');
             $table->timestamps();
         });
     }

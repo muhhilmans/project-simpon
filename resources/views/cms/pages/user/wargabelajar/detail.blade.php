@@ -150,10 +150,12 @@
             <div class="tab-pane fade" id="navs-pills-top-file" role="tabpanel">
                 <div class="card-header d-flex justify-content-between align-items-center mb-2">
                     <h5>Berkas Kelengkapan</h5>
-                    <button class="btn btn-{{ $user->is_active ? 'danger' : 'primary' }}" type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#changeModal{{ $user->id }}">{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}</button>
-                    @include('cms.pages.user.wargabelajar.partials.change')
+                    @hasrole('superadmin|admin')
+                        <button class="btn btn-{{ $user->is_active ? 'danger' : 'primary' }}" type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#changeModal{{ $user->id }}">{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}</button>
+                        @include('cms.pages.user.wargabelajar.partials.change')
+                    @endhasrole
                 </div>
                 <div class="card-body pt-0">
                     <div class="row justify-content-center g-lg-3">

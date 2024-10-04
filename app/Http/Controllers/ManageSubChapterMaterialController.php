@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ManageMaterialController extends Controller
+class ManageSubChapterMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('maintenance');
+        return view('soon');
     }
 
     /**
